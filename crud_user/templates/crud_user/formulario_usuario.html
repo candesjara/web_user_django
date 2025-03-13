@@ -1,0 +1,43 @@
+{% extends "crud_user/base.html" %}
+
+{% block title %}Crear un Usuario{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center my-4">Formulario de Usuario</h2>
+
+    <div class="card p-4">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Nombre</label>
+                {{ form.nombre }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Dirección</label>
+                {{ form.direccion }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Teléfono</label>
+                {{ form.telefono }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Correo</label>
+                {{ form.correo }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Género</label>
+                {{ form.genero }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Edad</label>
+                {{ form.edad }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="{% url 'lista_usuarios' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
