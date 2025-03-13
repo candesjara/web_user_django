@@ -1,93 +1,103 @@
-# web_user_django
+📌 Proyecto Django con API y Pruebas Automatizadas
 
+📖 Descripción
 
+Este es un proyecto en Django que implementa un CRUD de usuarios con una API REST y pruebas automatizadas.
+El objetivo es gestionar usuarios mediante una interfaz web y exponer los datos a través de una API para integraciones con otras aplicaciones.
 
-## Getting started
+🚀 Tecnologías utilizadas
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- Django 5.1.7 - Framework web principal.
+- Django REST Framework (DRF) - Para la construcción de la API REST.
+- SQLite (por defecto) - Base de datos.
+- Pytest & Pytest-Django - Para pruebas automatizadas.
+- Faker - Para generar datos de prueba.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+📂 Estructura del Proyecto
 
-## Add your files
+web_user/
+│-- crud_user/              # Aplicación principal del CRUD
+│   ├── migrations/         # Migraciones de la base de datos
+│   ├── tests/              # Pruebas automatizadas
+│   │   ├── test_forms.py   # Pruebas de formularios
+│   │   ├── test_views.py   # Pruebas de vistas
+│   │   ├── test_api.py     # Pruebas de la API
+│   ├── models.py           # Modelos de la base de datos
+│   ├── views.py            # Lógica de vistas y API
+│   ├── urls.py             # Rutas del CRUD y API
+│   ├── serializers.py      # Serializadores para la API
+│-- web_user/
+│   ├── settings.py         # Configuración del proyecto Django
+│   ├── urls.py             # Rutas globales del proyecto
+│-- manage.py               # Comando principal de Django
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+🛠 Instalación y Configuración
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/itm_qa_assurance/web_user_django.git
-git branch -M main
-git push -uf origin main
-```
+1️⃣ Clonar el repositorio
 
-## Integrate with your tools
+git clone https://gitlab.com/itm_qa_assurance/web_user_django.git
+cd web_user_django
 
-- [ ] [Set up project integrations](https://gitlab.com/itm_qa_assurance/web_user_django/-/settings/integrations)
+2️⃣ Crear y activar un entorno virtual
 
-## Collaborate with your team
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate    # Windows
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+3️⃣ Instalar dependencias
 
-## Test and Deploy
+pip install -r requirements.txt
 
-Use the built-in continuous integration in GitLab.
+4️⃣ Aplicar migraciones y ejecutar el servidor
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+python manage.py migrate
+python manage.py runserver
 
-***
+🌐 API REST
 
-# Editing this README
+El proyecto expone una API REST para gestionar los usuarios.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+🔹 Endpoints disponibles
 
-## Suggestions for a good README
+Método      URL                     Descripción
+GET         /api/usuarios/          Listar todos los usuarios
+POST        /api/usuarios/          Crear un nuevo usuario
+GET         /api/usuarios/{id}/     Obtener un usuario por ID
+PUT         /api/usuarios/{id}/     Actualizar un usuario por ID
+DELETE      /api/usuarios/{id}/     Eliminar un usuario por ID
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+📌 Ejemplo de petición con curl
 
-## Name
-Choose a self-explaining name for your project.
+🔹 Crear un usuario:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+curl -X POST http://127.0.0.1:8000/api/usuarios/ \  
+     -H "Content-Type: application/json" \  
+     -d '{"nombre": "Juan Pérez", "direccion": "Calle 123", "telefono": "1234567", "correo": "juan@example.com", "genero": "M", "edad": 30}'
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+🔹 Listar usuarios:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+curl -X GET http://127.0.0.1:8000/api/usuarios/
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+🧪 Pruebas Automatizadas
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+El proyecto incluye pruebas automatizadas con pytest.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+🔹 Ejecutar todas las pruebas:
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+python -m pytest
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+🔹 Tipos de pruebas incluidas:
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+- Pruebas unitarias: Verifican el funcionamiento de los formularios y modelos.
+- Pruebas de integración: Validan la comunicación entre la API y la base de datos.
+- Pruebas funcionales: Aseguran que las vistas y flujos de usuario operan correctamente.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+🎯 Próximos pasos
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+- Mejorar la seguridad de la API.
+- Agregar autenticación y permisos.
+- Implementar pruebas de carga y rendimiento.
 
-## License
-For open source projects, say how it is licensed.
+📜 Licencia
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Este proyecto está bajo la licencia MIT. Puedes usarlo libremente respetando los términos de la licencia.
