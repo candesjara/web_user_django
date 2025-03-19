@@ -11,29 +11,23 @@ jobs:
     steps:
       - name: Clonar repositorio
         uses: actions/checkout@v3
+
       - name: Configurar Python
         uses: actions/setup-python@v3
         with:
           python-version: "3.10"
+
       - name: Instalar dependencias
         run: |
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
-      - name: Ejecutar pruebas
+
+      - name: Instalar Playwright y navegadores
         run: |
           source venv/bin/activate
-          python manage.py test
+          playwright install
 
-  deploy-docker:
-    needs: build-and-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clonar repositorio
-        uses: actions/checkout@v3
-      - name: Iniciar sesión en Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-      - name: Construir y subir imagen Docker
+      - name: Ejecutar pruebas
         run: |
-          docker build -t tu_usuario/mi_proyecto:latest .
-          docker push tu_usuario/mi_proyecto:latest
+          source venv/bin/
