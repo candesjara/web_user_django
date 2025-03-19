@@ -1,33 +1,73 @@
-name: CI/CD Django en Docker
+name: CI/CD para Django
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Clonar repositorio
-        uses: actions/checkout@v3
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
 
       - name: Configurar Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: '3.10'
+
+      - name: Actualizar pip y crear entorno virtual
+        run: |
+          python -m pip install --upgrade pip
+          python -m venv venv
+          source venv/bin/activate
 
       - name: Instalar dependencias
+        run: |
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Instalar Playwright y dependencias
+        run: |
+          source venv/bin/activate
+          playwright install
+          playwright install-deps
+
+      - name: Aplicar migraciones
+        run: |
+          source venv/bin/activate
+          python manage.py migrate
+
+      - name: Ejecutar pruebas automatizadas
+        run: |
+          source venv/bin/activate
+          pytest --maxfail=5 --disable-warnings -v
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Crear entorno virtual e instalar dependencias
         run: |
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Instalar Playwright y navegadores
+      - name: Desplegar aplicación (Ajusta según tu entorno)
         run: |
-          source venv/bin/activate
-          playwright install
-
-      - name: Ejecutar pruebas
-        run: |
-          source venv/bin/
+          echo "Aquí iría tu comando de despliegue"
