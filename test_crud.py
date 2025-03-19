@@ -21,8 +21,6 @@ def test_crear_registro():
         page.wait_for_timeout(2000)  # Espera 2 segundos
         print(page.content())  # Imprimir el HTML de la página después de enviar el formulario
 
-       
-
         assert page.text_content("body").find("Juan Pérez") != -1
 
         browser.close()
