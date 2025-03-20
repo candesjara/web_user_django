@@ -32,12 +32,6 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Instalar Playwright y dependencias
-        run: |
-          source venv/bin/activate
-          playwright install
-          playwright install-deps
-
       - name: Aplicar migraciones
         run: |
           source venv/bin/activate
