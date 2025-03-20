@@ -54,18 +54,3 @@ jobs:
 
       - name: Subir imagen a Docker Hub
         run: docker push ${{ secrets.DOCKERUSERNAME }}/web_user_django:latest
-
-      - name: Desplegar en servidor remoto (Opcional)
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SERVER_IP: ${{ secrets.SERVER_IP }}
-          USER: ${{ secrets.SERVER_USER }}
-        run: |
-          echo "$SSH_PRIVATE_KEY" > private_key.pem
-          chmod 600 private_key.pem
-          ssh -i private_key.pem -o StrictHostKeyChecking=no $USER@$SERVER_IP << 'EOF'
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/web_user_django:latest
-          docker stop web_user_django || true
-          docker rm web_user_django || true
-          docker run -d -p 8000:8000 --name web_user_django ${{ secrets.DOCKER_HUB_USERNAME }}/web_user_django:latest
-          EOF
